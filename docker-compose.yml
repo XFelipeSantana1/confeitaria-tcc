@@ -1,0 +1,46 @@
+# Banco do projeto em container.
+#
+# As credenciais NÃO estão neste arquivo: vêm do `.env` da raiz, que é
+# versionado (o repositório é privado e os valores são de desenvolvimento local).
+# O `:?` abaixo faz o Compose PARAR com o nome da variável que falta, em vez de
+# subir com uma senha vazia — e o motivo de não ter um `valor-padrão` aqui é
+# que padrão no compose vira senha escrita junto do código.
+#
+# Para subir do zero: o `.env` já vem no repositório, então basta
+#
+#   docker compose up -d
+
+# Nome FIXADO do projeto Compose. Por quê: sem este `name`, o projeto TIRA
+# o nome da PASTA — e quando a pasta subiu de `Confeitaria/` para a raiz, o Compose
+# começou a chamar o projeto de `Confeitaria1`, "esqueceu" o MySQL que já
+# rodava (projeto `confeitaria`) e tentou criar outro com o mesmo
+# `container_name`, falhando no conflito. Fixando o nome, o Compose adota o
+# container vivo e o volume `confeitaria_mysql_data` (o que tem os dados),
+# de onde o comando for rodado.
+name: confeitaria
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: minha-api-mysql
+    restart: unless-stopped
+    environment:
+      # O `:?` faz o Compose PARAR se a variável não estiver no `.env`.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?defina MYSQL_ROOT_PASSWORD no .env da raiz}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?defina MYSQL_DATABASE no .env da raiz}
+      MYSQL_USER: ${MYSQL_USER:?defina MYSQL_USER no .env da raiz}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?defina MYSQL_PASSWORD no .env da raiz}
+    ports:
+      - "3306:3306"
+    volumes:
+      # Volume nomeado: sem ele, um `docker compose down` apaga o banco.
+      #
+      # As FOTOS ficam fora, em `backend/uploads`, porque o backend roda na
+      # máquina (não em container) — o que significa que elas somem quando o
+      # disco é limpo, mesmo com o banco inteiro. É a pendência conhecida do
+      # projeto: enquanto o backend não entrar no Compose, foto nova não
+      # sobrevive a recriação da máquina. Ver a seção "Pendências" do README.
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

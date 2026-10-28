@@ -1,0 +1,47 @@
+# Dependências e builds
+node_modules/
+dist/
+build/
+
+# Configuração local
+#
+# Os arquivos `.env` (raiz, backend, painel, vitrine) estão VERSIONADOS de
+# propósito: este repositório é privado e o dono pediu que a configuração
+# viesse junto, para o projeto rodar com um `cp` e um `docker compose up` sem
+# etapa extra. São credenciais de desenvolvimento local — a senha do MySQL
+# local e a chave de assinatura do token — e o repositório não é público.
+#
+# `.env.local` e `.env.*.local` continuam fora: quem usar para sobrescrever
+# valores na própria máquina (uma URL de Codespace, uma senha trocada) não
+# versiona o arquivo, e é para isso que eles existem.
+.env.local
+.env.*.local
+
+# Tokens/sessões (o backend gerava token.txt com JWT real em testes)
+token.txt
+**/token.txt
+
+# Logs e temporários
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Fotos enviadas pelo gestor. Ficam no disco do servidor, não no git: são
+# conteúdo da loja (e podem ter kilo), não código.
+backend/uploads/
+
+# Editores
+.vscode/
+.idea/
+
+# Bastidor do desenvolvimento (não faz parte do projeto publicado)
+CONTEXTO_PROJETO.md
+prompt-opencode.md
+PROMPT-IMAGENS.md
+
+# Briefing de identidade: documento de trabalho para escolher a logo, já
+# cumpriu. A marca entregue está versionada em `marca/` e instalada em
+# `painel-admin/public/` e `vitrine-cliente/public/`.
+IDENTIDADE.md
+

@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Foco de teclado visível: sem isso, quem navega por Tab não enxerga onde
+   está. Só aparece no teclado (`:focus-visible`), então o mouse não vê. */
+:focus-visible {
+  outline: 2px solid #c4622d;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+body {
+  margin: 0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  background: #fdf8f3;
+  color: #2b1e17;
+}
+
+@keyframes deslizar {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Quem pede menos movimento não é um caso raro: pode ser enxaquecimento,
+   enxaquecimento vestibular, ou só preferência. A regra desliga as animações
+   de uma vez — inclusive as que o Tailwind gera por classe — em vez de
+   AUDITAR componente por componente e esquecer algum. O `!important` é
+   necessário porque o Tailwind põe a animação em `.animate-*` com
+   especificidade de classe, e uma regra de elemento não venceria.
+   O que continua valendo é a transição de cor de 150 ms em `hover`: movimento
+   de menos de meio segundo sem deslocamento não causa problema. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

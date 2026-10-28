@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Foco de teclado visível: sem isso, quem navega por Tab não enxerga onde
+   está. Só aparece no teclado (`:focus-visible`), então o mouse não vê. */
+:focus-visible {
+  outline: 2px solid #c4622d;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Base da vitrine: creme sólido. Os brilhos radiais que existiam aqui
+   foram removidos: gradiente de fundo era o tipo de decoração que a página
+   não precisa — a luz da marca entra pela fotografia, não pelo CSS. */
+body {
+  margin: 0;
+  font-family: "DM Sans", system-ui, sans-serif;
+  background: #fdf8f3;
+  color: #2b1e17;
+}
+
+/* Animações usadas via classes arbitrary animate-[...] nos componentes.
+   (`flutuar` foi apagada: só existia na IlustracaoBuscaVazia, removida.) */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* "surgir" anima SÓ a opacidade do balão de confirmação.
+   O "subir" acima mexe em transform, e o balão usa -translate-x-1/2 para se
+   centralizar: durante a animação o transform do keyframe vencia o do
+   Tailwind e o balão saía do centro, parecendo sumir. Aqui a entrada é só
+   fade, sem mexer em positionamento. */
+@keyframes surgir {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes deslizar {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+/* Fade do overlay do drawer: entrar junto com o slide, não seco. */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Quem pede menos movimento não é um caso raro: pode ser enxaqueca,
+   gravidez, ou só preferência. A regra desliga as animações de uma vez —
+   inclusive as que o Tailwind gera por classe — em vez de auditar
+   componente por componente e esquecer algum. O `!important` é necessário
+   porque o Tailwind põe a animação em `.animate-*` com especificidade de
+   classe, e uma regra de elemento não venceria. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

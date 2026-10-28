@@ -1,0 +1,9 @@
+node_modules/
+dist/
+# O `.env` NÃO é ignorado: o repositório é privado e versionar a configuração
+# local evita o "MYSQL_PASSWORD is missing" do Compose em quem clona. Ver o
+# aviso dentro do próprio `backend/.env` sobre o `JWT_SECRET`.
+#
+# Nunca commitar tokens/sessões reais (ex-JWT de teste em src/token.txt)
+token.txt
+src/token.txt
